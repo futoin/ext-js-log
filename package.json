@@ -1,0 +1,54 @@
+{
+  "name": "@futoin/log",
+  "version": "0.0.1",
+  "description": "Extended log face and service implementations",
+  "main": "lib/main.js",
+  "files": [
+    "examples/",
+    "lib/",
+    "*Face.js",
+    "*Service.js",
+    "*Helpers.js",
+    "futoin.json"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futoin/ext-js-log.git"
+  },
+  "keywords": [
+    "futoin",
+    "log"
+  ],
+  "author": {
+    "name": "Andrey Galkin",
+    "email": "andrey@futoin.org"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/futoin/ext-js-log/issues",
+    "email": "support@futoin.org"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "futoin-asyncsteps": "^2.4.3",
+    "futoin-executor": "^2.3.2",
+    "futoin-invoker": "^2.4.1",
+    "grunt": "^1.0.4",
+    "grunt-eslint": "^22.0.0",
+    "grunt-jsdoc-to-markdown": "^5.0.0",
+    "grunt-simple-nyc": "^3.0.0",
+    "grunt-text-replace": "^0.4.0",
+    "mocha": "^6.2.2"
+  },
+  "peerDependencies": {
+    "futoin-asyncsteps": "^2.4.3",
+    "futoin-executor": "^2.3.2",
+    "futoin-invoker": "^2.4.1"
+  }
+}
