@@ -1,6 +1,7 @@
 
 === (next) ===
 NEW: log level support for ConsoleFace
+NEW: initFace function
 
 === 1.0.0 (2019-11-17) ===
 Initial release

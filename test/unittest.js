@@ -10,8 +10,10 @@ const SpecTools = require( 'futoin-invoker/SpecTools' );
 
 require( 'futoin-invoker/lib/JSONCoder' ).register();
 
-require( '../lib/main' );
-const ConsoleFace = require( '../ConsoleFace' );
+const {
+    ConsoleFace,
+    initFace,
+} = require( '../lib/main' );
 
 SpecTools.on( 'error', ( ...args ) => console.log( args ) );
 
@@ -48,7 +50,7 @@ describe( 'ConsoleFace', function() {
 
     it( 'should register', $as_test( ( asi ) => {
         const ccm = new AdvancedCCM();
-        ConsoleFace.register( asi, ccm );
+        initFace( asi, ccm );
         asi.add( asi => {
             if ( Console ) {
                 expect( ccm.log()._console ).instanceOf( Console );
@@ -139,7 +141,7 @@ describe( 'ConsoleFace', function() {
     it( 'should handle logLevel', $as_test( ( asi ) => {
         const ccm = new AdvancedCCM();
         const out = new MockWritable();
-        ConsoleFace.register( asi, ccm, {
+        initFace( asi, ccm, {
             console: create_console( out, out ),
         } );
 

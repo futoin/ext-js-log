@@ -44,6 +44,14 @@ for stdout-based log collection.</p>
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#initFace">initFace(asi, ccm, [options])</a></dt>
+<dd><p>Initial client</p>
+</dd>
+</dl>
+
 <a name="ConsoleFace"></a>
 
 ## ConsoleFace ⇐ <code>LogFace</code>
@@ -116,6 +124,20 @@ Log message
 **window.futoin.Log** - Browser-only reference to futoin-log
 
 **Kind**: global variable  
+<a name="initFace"></a>
+
+## initFace(asi, ccm, [options])
+Initial client
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| asi | <code>AsyncSteps</code> | async steps interface |
+| ccm | <code>SimpleCCM</code> | CCM interface |
+| [options] | <code>object</code> | options |
+| [options.logType] | <code>string</code> | type of logger |
+
 
 
 *documented by [jsdoc-to-markdown](https://github.com/75lb/jsdoc-to-markdown)*.
