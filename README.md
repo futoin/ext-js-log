@@ -58,8 +58,24 @@ for stdout-based log collection.
 **Extends**: <code>LogFace</code>  
 
 * [ConsoleFace](#ConsoleFace) ⇐ <code>LogFace</code>
+    * [new ConsoleFace(impl, info)](#new_ConsoleFace_new)
     * [.msg(lvl, txt)](#LogFace+msg)
     * [.hexdump(lvl, txt, data)](#LogFace+hexdump)
+
+<a name="new_ConsoleFace_new"></a>
+
+### new ConsoleFace(impl, info)
+ConsoleFace setup
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| impl | <code>SimpleCCMImpl</code> |  | CCM impl |
+| info | <code>object</code> |  | info object |
+| info.options | <code>object</code> |  | options |
+| [info.options.console] | <code>object</code> |  | Console |
+| [info.options.logTime] | <code>object</code> | <code>false</code> | enable timestamps |
+| [info.options.logLevel] | <code>object</code> | <code>debug</code> | debug level |
 
 <a name="LogFace+msg"></a>
 

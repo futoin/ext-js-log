@@ -61,6 +61,7 @@ describe( 'ConsoleFace', function() {
         const out = new MockWritable();
         ConsoleFace.register( asi, ccm, {
             console: create_console( out, out ),
+            logLevel: 'debug',
         } );
 
         asi.forEach( levels, ( asi, _, lvl ) => {
@@ -84,6 +85,7 @@ describe( 'ConsoleFace', function() {
         MockConsoleFace.register( asi, ccm, {
             console: create_console( out, out ),
             logTime: true,
+            logLevel: 'debug',
         } );
 
         asi.forEach( levels, ( asi, _, lvl ) => {
@@ -99,6 +101,7 @@ describe( 'ConsoleFace', function() {
         const hd = '|0123456789abcdef|\n|0123456789abcdef|\n|0123456789abcdef|\n|0123456789abcdef|\n|0123456789abcdef|\n|dead|';
         ConsoleFace.register( asi, ccm, {
             console: create_console( out, out ),
+            logLevel: 'debug',
         } );
 
         asi.forEach( levels, ( asi, _, lvl ) => {
@@ -122,6 +125,7 @@ describe( 'ConsoleFace', function() {
 
         MockConsoleFace.register( asi, ccm, {
             console: create_console( out, out ),
+            logLevel: 'debug',
             logTime: true,
         } );
 
@@ -129,6 +133,21 @@ describe( 'ConsoleFace', function() {
             out.last_chunk = '';
             ccm.log().hexdump( lvl, 'test 123', Buffer.from( hd.replace( /[\n|]/g, '' ), 'hex' ) );
             expect( out.last_chunk ).equal( `${ts} ${lvl}: test 123 HEX:\n${hd}\n` );
+        } );
+    } ) );
+
+    it( 'should handle logLevel', $as_test( ( asi ) => {
+        const ccm = new AdvancedCCM();
+        const out = new MockWritable();
+        ConsoleFace.register( asi, ccm, {
+            console: create_console( out, out ),
+        } );
+
+        asi.forEach( levels, ( asi, i, lvl ) => {
+            out.last_chunk = '';
+            ccm.log()[lvl]( 'test 123' );
+            ccm.log().hexdump( lvl, 'test 123', 'abc', 'hex' );
+            expect( out.last_chunk ).equal( i > 0 ? `${lvl}: test 123\n${lvl}: test 123 HEX:\n|616263|\n` : '' );
         } );
     } ) );
 } );

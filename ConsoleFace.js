@@ -23,6 +23,15 @@ const { LogFace } = require( 'futoin-invoker' );
 
 const PER_LINE = 16;
 
+const LEVELS = {
+    debug: 4,
+    info: 3,
+    warn: 2,
+    error: 1,
+    security: 1,
+};
+Object.freeze( LEVELS );
+
 /**
  * Console-based AuditLog Native interface
  *
@@ -36,12 +45,22 @@ const PER_LINE = 16;
  * @augments LogFace
  */
 class ConsoleFace extends LogFace {
+    /**
+     * ConsoleFace setup
+     * @param {SimpleCCMImpl} impl - CCM impl
+     * @param {object} info - info object
+     * @param {object} info.options - options
+     * @param {object} [info.options.console] - Console
+     * @param {object} [info.options.logTime=false] - enable timestamps
+     * @param {object} [info.options.logLevel=debug] - debug level
+     */
     constructor( impl, info ) {
         super( impl, info );
 
         const { options } = info;
         this._console = options.console || console;
         this._timePart = options.logTime ? () => `${this._ts()} ` : () => '';
+        this._level = LEVELS[options.logLevel || 'info'];
     }
 
     /**
@@ -77,7 +96,9 @@ class ConsoleFace extends LogFace {
     * @alias LogFace#msg
     */
     msg( lvl, txt ) {
-        this._console.log( `${this._timePart()}${lvl}: ${txt}` );
+        if ( LEVELS[lvl] <= this._level ) {
+            this._console.log( `${this._timePart()}${lvl}: ${txt}` );
+        }
     }
 
     /**
@@ -88,6 +109,10 @@ class ConsoleFace extends LogFace {
     * @alias LogFace#hexdump
     */
     hexdump( lvl, txt, data ) {
+        if ( LEVELS[lvl] > this._level ) {
+            return;
+        }
+
         const cnsl = this._console;
         cnsl.log( `${this._timePart()}${lvl}: ${txt} HEX:` );
 
