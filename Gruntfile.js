@@ -17,6 +17,26 @@ module.exports = function( grunt ) {
                 'test/**/*.js',
             ],
         },
+        webpack: {
+            dist: require( './webpack.dist' ),
+            test: require( './webpack.test' ),
+        },
+        babel: {
+            options: {
+                sourceMap: true,
+                presets: [ '@babel/preset-env' ],
+                plugins: [ "@babel/transform-object-assign" ],
+            },
+            es5: {
+                expand: true,
+                src: [
+                    "lib/*.js",
+                    "test/*.js",
+                    "ConsoleFace.js",
+                ],
+                dest: 'es5/',
+            },
+        },
         jsdoc2md: {
             README: {
                 src: [ '*.js', 'lib/**/*.js' ],
@@ -63,17 +83,64 @@ module.exports = function( grunt ) {
                 },
             },
         },
+        karma: {
+            test: {
+                browsers: [ 'FirefoxHeadless' ],
+                customLaunchers: {
+                    FirefoxHeadless: {
+                        base: 'Firefox',
+                        flags: [
+                            '-headless',
+                        ],
+                        prefs: {
+                            'browser.cache.disk.enable': false,
+                        },
+                    },
+                },
+                frameworks: [ 'mocha' ],
+                reporters: [ 'mocha' ],
+                singleRun: true,
+                files: [
+                    { src: [ 'node_modules/futoin-asyncsteps/dist/polyfill-asyncsteps.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-asyncsteps/dist/futoin-asyncsteps.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-asyncevent/dist/polyfill-asyncevent.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-asyncevent/dist/futoin-asyncevent.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-invoker/dist/polyfill-invoker.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-invoker/dist/futoin-invoker.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-executor/dist/polyfill-executor.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'node_modules/futoin-executor/dist/futoin-executor.js' ],
+                        served: true, included: true, nocache: true },
+                    { src: [ 'dist/*test.js' ],
+                        serve: true, include: false },
+                ],
+            },
+        },
     } );
 
     grunt.loadNpmTasks( 'grunt-eslint' );
+    grunt.loadNpmTasks( 'grunt-babel' );
+    grunt.loadNpmTasks( 'grunt-webpack' );
+    grunt.loadNpmTasks( 'grunt-karma' );
     grunt.loadNpmTasks( 'grunt-simple-nyc' );
 
     grunt.registerTask( 'check', [ 'eslint' ] );
 
+    grunt.registerTask( 'build-browser', [ 'babel', 'webpack:dist' ] );
+    grunt.registerTask( 'test-browser', [ 'webpack:test', 'karma' ] );
+
     grunt.registerTask( 'node', [ 'nyc' ] );
+    grunt.registerTask( 'browser', [ 'build-browser', 'test-browser' ] );
     grunt.registerTask( 'test', [
         'check',
         'node',
+        'browser',
         'doc',
     ] );
 
@@ -81,5 +148,7 @@ module.exports = function( grunt ) {
     grunt.loadNpmTasks( 'grunt-text-replace' );
     grunt.registerTask( 'doc', [ 'jsdoc2md:README', 'replace:README' ] );
 
-    grunt.registerTask( 'default', [ 'check' ] );
+    grunt.registerTask( 'dist', [ 'build-browser' ] );
+
+    grunt.registerTask( 'default', [ 'check', 'dist' ] );
 };

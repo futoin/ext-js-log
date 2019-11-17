@@ -73,11 +73,21 @@ module.exports = {
             }
         },
         {
+            env: {
+                browser: true,
+            },
+            files: [ "lib/browser*.js" ],
+            rules: {
+                strict: [ "error", "function" ],
+            }
+        },
+        {
             env : {
                 es6: true,
                 node: true,
                 commonjs: true,
                 mocha: true,
+                browser: true,
             },
             files: [ "test/**/*.js" ],
             rules: {
