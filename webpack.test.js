@@ -1,5 +1,7 @@
 'use strict';
 
+const webpack = require( 'webpack' );
+
 module.exports = {
     mode: 'development',
     entry: {
@@ -36,8 +38,18 @@ module.exports = {
             commonjs2: "futoin-executor",
         },
     },
-    node : {
-        stream: true,
-        console: true,
+    resolve : {
+        fallback : {
+            assert: require.resolve( "assert" ),
+            console: require.resolve( "console-browserify" ),
+            stream: require.resolve( "stream-browserify" ),
+            util: require.resolve( "util" ),
+        },
     },
+    plugins : [
+        new webpack.ProvidePlugin( {
+            Buffer: [ 'buffer', 'Buffer' ],
+            process: "process/browser",
+        } ),
+    ],
 };
